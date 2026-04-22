@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="app-hero compact">
+    <div class="container">
+        <p class="mb-2 fw-semibold">Treatments</p>
+        <h1 class="display-5 fw-bold mb-2">Available Treatments</h1>
+        <p class="fs-5 mb-0">Review treatment options and the doctors connected to them.</p>
+    </div>
+</section>
+
+<section class="page-shell">
+    <div class="container">
+        <div class="row g-4">
+            {% for treatment in treatments %}
+                <div class="col-md-4">
+                    <div class="app-card action-card">
+                        <div class="eyebrow mb-2">{{ treatment.category }}</div>
+                        <h5 class="fw-bold text-primary">{{ treatment.treatment_name }}</h5>
+                        <p class="mb-2"><strong>Doctor:</strong> {{ treatment.doctor.name }}</p>
+                        <p class="mini-muted">{{ treatment.description|truncatewords:22 }}</p>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12">
+                    <div class="alert alert-info">No treatments available.</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

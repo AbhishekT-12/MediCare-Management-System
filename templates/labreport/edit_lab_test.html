@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-body">
+            <h3 class="text-center mb-4">✏️ Edit Lab Test</h3>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <!-- Test Name -->
+                <div class="mb-3">
+                    <label class="form-label">🧬 Test Name</label>
+                    <select name="lab_test" class="form-control" id="testSelect" onchange="fillCost(this)">
+                        {% for t in hospital_tests %}
+                            <option value="{{ t.test_name }}"
+                                data-cost="{{ t.price }}"
+                                data-time="{{ t.time_required }}"
+                                {% if test.lab_test == t.test_name %}selected{% endif %}>
+                                {{ t.test_name }} — ₹{{ t.price }} ({{ t.time_required }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Doctor -->
+                <div class="mb-3">
+                    <label class="form-label">🩺 Referred By (Doctor)</label>
+                    <select name="doctor" class="form-control">
+                        {% for d in doctors %}
+                            <option value="{{ d.id }}" {% if test.referred_by.id == d.id %}selected{% endif %}>
+                                {{ d }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Patient -->
+                <div class="mb-3">
+                    <label class="form-label">👤 Patient Name</label>
+                    <select name="patient" class="form-control">
+                        {% for p in patients %}
+                            <option value="{{ p.id }}" {% if test.patient_name.id == p.id %}selected{% endif %}>
+                                {{ p.user.username }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Cost -->
+                <div class="mb-3">
+                    <label class="form-label">💰 Test Cost (₹)</label>
+                    <input type="number" name="cost" id="costField" class="form-control" value="{{ test.test_cost }}" required>
+                </div>
+
+                <!-- Time Required -->
+                <div class="mb-3">
+                    <label class="form-label">⏱ Time Required</label>
+                    <input type="text" name="time_required" id="timeField" class="form-control" value="{{ test.time_required }}">
+                </div>
+
+                <!-- Status -->
+                <div class="mb-3">
+                    <label class="form-label">📋 Result Status</label>
+                    <select name="lab_result" class="form-control">
+                        <option value="pending" {% if test.lab_result == 'pending' %}selected{% endif %}>Pending</option>
+                        <option value="ongoing" {% if test.lab_result == 'ongoing' %}selected{% endif %}>Ongoing</option>
+                        <option value="completed" {% if test.lab_result == 'completed' %}selected{% endif %}>Completed</option>
+                    </select>
+                </div>
+
+                <!-- Notes -->
+                <div class="mb-3">
+                    <label class="form-label">📝 Notes</label>
+                    <textarea name="desc" class="form-control" rows="3">{{ test.result_desc }}</textarea>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-warning px-5">💾 Save Changes</button>
+                    <a href="{% url 'labtech_dashboard' %}" class="btn btn-secondary ms-2">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function fillCost(select) {
+    const opt = select.options[select.selectedIndex];
+    document.getElementById('costField').value = opt.getAttribute('data-cost') || '';
+    document.getElementById('timeField').value = opt.getAttribute('data-time') || '';
+}
+</script>
+
+{% endblock %}

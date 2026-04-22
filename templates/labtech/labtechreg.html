@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container">
+    <div class="jumbotron">
+        <div class="card card-body">
+
+            <h1>REGISTRATION FORM</h1>
+
+            <form action="{% url 'labtechreg' %}" method="POST">
+                {% csrf_token %}
+
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form.username|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.email|as_crispy_field }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form.yoe|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.address|as_crispy_field }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form.empid|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.qualification|as_crispy_field }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        {{ form.password1|as_crispy_field }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        {{ form.password2|as_crispy_field }}
+                    </div>
+                </div>
+
+                <br>
+                <input type="submit" value="REGISTER" class="btn btn-primary">
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

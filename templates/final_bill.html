@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="page-shell">
+    <div class="container">
+        <div class="app-card p-4 p-md-5">
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 border-bottom pb-4 mb-4">
+                <div class="d-flex align-items-center gap-3">
+                    <img src="{% static 'images/hospital-logo.svg' %}" alt="Hospital logo" class="rounded" width="72" height="72">
+                    <div>
+                        <h1 class="h3 fw-bold mb-1">{{ hospital_name }}</h1>
+                        <p class="mb-1 mini-muted">{{ hospital_address }}</p>
+                        <p class="mb-0 mini-muted">Phone: +91 98765 43210</p>
+                    </div>
+                </div>
+                <div class="text-md-end">
+                    <div class="eyebrow">Final Bill</div>
+                    <div class="fw-bold">Bill No: HMS-{{ admission.id }}</div>
+                </div>
+            </div>
+
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded">
+                        <div class="mini-muted small">Patient Name</div>
+                        <div class="fw-bold">{{ admission.patient_name.user.username }}</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded">
+                        <div class="mini-muted small">Doctor Name</div>
+                        <div class="fw-bold">Dr. {{ admission.doctor_name.name }}</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 bg-light rounded">
+                        <div class="mini-muted small">Admission Date</div>
+                        <div class="fw-bold">{{ admission.date_of_admitted }}</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 bg-light rounded">
+                        <div class="mini-muted small">Discharge Date</div>
+                        <div class="fw-bold">{{ admission.date_of_discharge }}</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 bg-light rounded">
+                        <div class="mini-muted small">Room Type</div>
+                        <div class="fw-bold">{{ admission.room_type }}</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 bg-light rounded">
+                        <div class="mini-muted small">Food Required</div>
+                        <div class="fw-bold">{% if admission.food_required %}Yes{% else %}No{% endif %}</div>
+                    </div>
+                </div>
+            </div>
+
+            {% if admission.description %}
+                <div class="mb-4">
+                    <div class="eyebrow">Notes</div>
+                    <p class="mb-0">{{ admission.description }}</p>
+                </div>
+            {% endif %}
+
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Charge</th>
+                            <th class="text-end">Per Day</th>
+                            <th class="text-end">Days</th>
+                            <th class="text-end">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Bed Charge</td>
+                            <td class="text-end">Rs. {{ bill.charges.bed_charge }}</td>
+                            <td class="text-end">{{ bill.total_days }}</td>
+                            <td class="text-end">Rs. {{ bill.bed_total }}</td>
+                        </tr>
+                        <tr>
+                            <td>Nursing Charge</td>
+                            <td class="text-end">Rs. {{ bill.charges.nursing_charge }}</td>
+                            <td class="text-end">{{ bill.total_days }}</td>
+                            <td class="text-end">Rs. {{ bill.nursing_total }}</td>
+                        </tr>
+                        <tr>
+                            <td>Doctor Visit</td>
+                            <td class="text-end">Rs. {{ bill.charges.doctor_visit }}</td>
+                            <td class="text-end">{{ bill.total_days }}</td>
+                            <td class="text-end">Rs. {{ bill.doctor_total }}</td>
+                        </tr>
+                        <tr>
+                            <td>Miscellaneous</td>
+                            <td class="text-end">Rs. {{ bill.charges.misc_charge }}</td>
+                            <td class="text-end">{{ bill.total_days }}</td>
+                            <td class="text-end">Rs. {{ bill.misc_total }}</td>
+                        </tr>
+                        {% if admission.food_required %}
+                            <tr>
+                                <td>Food Charge</td>
+                                <td class="text-end">Rs. {{ bill.food_charge_per_day }}</td>
+                                <td class="text-end">{{ bill.total_days }}</td>
+                                <td class="text-end">Rs. {{ bill.food_total }}</td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <td colspan="3" class="fw-bold">Subtotal</td>
+                            <td class="text-end fw-bold">Rs. {{ bill.subtotal }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">Medicine Charge</td>
+                            <td class="text-end">Rs. {{ bill.medicine_charge }}</td>
+                        </tr>
+                        <tr class="table-success">
+                            <td colspan="3" class="fw-bold">Total Price</td>
+                            <td class="text-end fw-bold">Rs. {{ bill.grand_total }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-6">
+                    <p class="fw-bold mb-5">Prepared By</p>
+                    <p class="mb-0">Billing Department</p>
+                </div>
+                <div class="col-6 text-end">
+                    <p class="fw-bold mb-5">Authorized Signature</p>
+                    <p class="mb-0">{{ hospital_name }}</p>
+                </div>
+            </div>
+
+            <div class="d-flex flex-wrap gap-2 mt-4 print-actions">
+                <button type="button" onclick="window.print()" class="btn btn-primary">Print Bill</button>
+                <a href="{% url 'home' %}" class="btn btn-outline-secondary">Back Home</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

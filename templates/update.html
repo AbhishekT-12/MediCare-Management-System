@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-info text-white">
+            <h3 class="mb-0">Update Profile</h3>
+        </div>
+        <div class="card-body">
+
+            {% if form.errors or form1.errors %}
+            <div class="alert alert-danger">
+                <strong>Please fix the errors below before saving.</strong>
+            </div>
+            {% endif %}
+
+            <form action="{% url 'update' %}" enctype="multipart/form-data" method="POST" novalidate>
+                {% csrf_token %}
+
+                <h5 class="text-muted mt-2">Account Info</h5>
+                <hr>
+                {{ form.username | as_crispy_field }}
+                {{ form.email    | as_crispy_field }}
+
+                <h5 class="text-muted mt-4">Personal Info</h5>
+                <hr>
+                {{ form1.phone   | as_crispy_field }}
+                {{ form1.address | as_crispy_field }}
+                {{ form1.street  | as_crispy_field }}
+                {{ form1.city    | as_crispy_field }}
+                {{ form1.state   | as_crispy_field }}
+                {{ form1.zipcode | as_crispy_field }}
+
+                <h5 class="text-muted mt-4">Profile Picture</h5>
+                <hr>
+                {% if request.user.userdetails.userpic %}
+                    <p>Current picture:</p>
+                    <img src="{{ request.user.userdetails.userpic.url }}"
+                         height="100" class="rounded mb-2"><br>
+                {% endif %}
+                {{ form1.userpic | as_crispy_field }}
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success px-5">Save Changes</button>
+                    <a href="{% url 'profile' %}" class="btn btn-secondary ms-2">Cancel</a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

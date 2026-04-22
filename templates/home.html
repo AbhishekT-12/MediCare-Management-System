@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if is_labtech %}
+
+<section class="app-hero compact">
+    <div class="container">
+        <p class="mb-2 fw-semibold">Lab Operations</p>
+        <h1 class="display-5 fw-bold mb-2">Welcome back, {{ request.user.username }}</h1>
+        <p class="fs-5 mb-0">Manage tests, update results, and prepare discharge billing from one place.</p>
+    </div>
+</section>
+
+<section class="page-shell">
+    <div class="container">
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="app-card stat-card">
+                    <div class="mini-muted small">Employee Name</div>
+                    <div class="fw-bold fs-4">{{ request.user.username }}</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="app-card stat-card">
+                    <div class="mini-muted small">Employee ID</div>
+                    <div class="fw-bold fs-4">{{ labtech.empId }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-end justify-content-between mb-3">
+            <div>
+                <div class="eyebrow">Quick Actions</div>
+                <h2 class="h4 mb-0">Choose your next task</h2>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="app-card action-card">
+                    <span class="icon-tile mb-3"><i class="bi bi-clipboard2-pulse"></i></span>
+                    <h5 class="fw-bold">Hospital Tests</h5>
+                    <p class="mini-muted">Review the available test catalog and pricing.</p>
+                    <a href="{% url 'all_tests' %}" class="btn btn-outline-primary">View Tests</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="app-card action-card">
+                    <span class="icon-tile mb-3"><i class="bi bi-graph-up-arrow"></i></span>
+                    <h5 class="fw-bold">Lab Dashboard</h5>
+                    <p class="mini-muted">Track pending, ongoing, and completed lab work.</p>
+                    <a href="{% url 'labtech_dashboard' %}" class="btn btn-outline-success">Open Dashboard</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="app-card action-card">
+                    <span class="icon-tile mb-3"><i class="bi bi-receipt"></i></span>
+                    <h5 class="fw-bold">Discharge Bill</h5>
+                    <p class="mini-muted">Create a discharge summary and generate the final bill.</p>
+                    <a href="{% url 'discharge' %}" class="btn btn-outline-warning">Create Bill</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% else %}
+
+<section class="app-hero">
+    <div class="container">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-7">
+                <p class="mb-2 fw-semibold">Medicare HMS</p>
+                <h1 class="display-5 fw-bold mb-3">Hello, {{ request.user.username }}</h1>
+                <p class="fs-5 mb-0">Book appointments, explore treatments, and keep your hospital visits organized.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="page-shell">
+    <div class="container">
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-4">
+                <div class="app-card action-card">
+                    <span class="icon-tile mb-3"><i class="bi bi-person-vcard"></i></span>
+                    <h5 class="fw-bold">Find Doctors</h5>
+                    <p class="mini-muted">Browse specialists and choose the right doctor for your care.</p>
+                    <a href="{% url 'alldoctors' %}" class="btn btn-primary">View Doctors</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="app-card action-card">
+                    <span class="icon-tile mb-3"><i class="bi bi-heart-pulse"></i></span>
+                    <h5 class="fw-bold">Treatments</h5>
+                    <p class="mini-muted">Explore treatment categories and available medical services.</p>
+                    <a href="{% url 'all_treatments' %}" class="btn btn-success">View Treatments</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="app-card action-card">
+                    <span class="icon-tile mb-3"><i class="bi bi-calendar2-check"></i></span>
+                    <h5 class="fw-bold">Book Appointment</h5>
+                    <p class="mini-muted">Schedule your visit with a doctor and preferred time slot.</p>
+                    <a href="{% url 'book_appointment' %}" class="btn btn-primary">Book Appointment</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endif %}
+
+{% endblock %}

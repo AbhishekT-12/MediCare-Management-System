@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<section class="page-shell">
+    <div class="container">
+        <div class="row g-4 align-items-start">
+            <div class="col-lg-4">
+                <div class="app-card p-4 text-center">
+                    {% if user.userdetails.userpic %}
+                        <img src="{{ user.userdetails.userpic.url }}" alt="{{ user.username }}" class="profile-photo mb-3">
+                    {% else %}
+                        <img src="{% static 'images/avatar.jpg' %}" alt="{{ user.username }}" class="profile-photo mb-3">
+                    {% endif %}
+                    <h1 class="h4 fw-bold mb-1">{{ user.username|title }}</h1>
+                    <p class="mini-muted mb-3">{{ user.email }}</p>
+                    <a href="{% url 'update' %}" class="btn btn-primary">Update Profile</a>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="app-card p-4 mb-4">
+                    <div class="eyebrow">Contact</div>
+                    <h2 class="h4 fw-bold mb-3">Profile Details</h2>
+                    <div class="row g-3">
+                        <div class="col-md-6"><strong>Phone:</strong> {{ user.userdetails.phone|default:"Not added" }}</div>
+                        <div class="col-md-6"><strong>Address:</strong> {{ user.userdetails.address|default:"Not added" }}</div>
+                        <div class="col-md-6"><strong>Street:</strong> {{ user.userdetails.street|default:"Not added" }}</div>
+                        <div class="col-md-6"><strong>State:</strong> {{ user.userdetails.state|default:"Not added" }}</div>
+                        <div class="col-md-6"><strong>Zipcode:</strong> {{ user.userdetails.zipcode|default:"Not added" }}</div>
+                    </div>
+                </div>
+
+                {% if not is_labtech %}
+                    <div class="app-card p-4">
+                        <div class="eyebrow">Appointments</div>
+                        <h2 class="h4 fw-bold mb-3">Booked Appointments</h2>
+                        {% if appointments %}
+                            <div class="table-responsive">
+                                <table class="table table-bordered mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Time Slot</th>
+                                            <th>Doctor</th>
+                                            <th>Treatment</th>
+                                            <th class="text-end">Charge</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for appointment in appointments %}
+                                            <tr>
+                                                <td>{{ appointment.date }}</td>
+                                                <td>{{ appointment.time_slot }}</td>
+                                                <td>{{ appointment.doctor.name }}</td>
+                                                <td>{{ appointment.treatment.treatment_name }}</td>
+                                                <td class="text-end">Rs. {{ appointment.consultation_charge }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <p class="mini-muted mb-0">You have no booked appointments yet.</p>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

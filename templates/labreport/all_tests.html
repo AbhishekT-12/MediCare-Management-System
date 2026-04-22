@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="page-shell">
+    <div class="container">
+        <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+            <div>
+                <div class="eyebrow">Lab Catalog</div>
+                <h1 class="h3 fw-bold mb-0">Available Hospital Tests</h1>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="{% url 'add_hospital_test' %}" class="btn btn-success">Add Test</a>
+                <a href="{% url 'labtech_dashboard' %}" class="btn btn-primary">Dashboard</a>
+            </div>
+        </div>
+
+        {% if tests %}
+            <div class="app-card p-0 overflow-hidden">
+                <div class="table-responsive">
+                    <table class="table table-bordered mb-0">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Test Name</th>
+                                <th class="text-end">Price</th>
+                                <th>Time Required</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for test in tests %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td class="fw-semibold">{{ test.test_name }}</td>
+                                    <td class="text-end">Rs. {{ test.price }}</td>
+                                    <td>{{ test.time_required }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="mt-3 mini-muted small">Total: <strong>{{ tests|length }}</strong> test(s)</div>
+        {% else %}
+            <div class="alert alert-info">No tests available. Add them via the admin panel.</div>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}

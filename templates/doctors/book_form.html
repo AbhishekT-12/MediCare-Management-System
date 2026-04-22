@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="app-hero compact">
+    <div class="container">
+        <p class="mb-2 fw-semibold">Appointment</p>
+        <h1 class="display-5 fw-bold mb-2">Book Appointment</h1>
+        <p class="fs-5 mb-0">Confirm the visit details and submit your appointment request.</p>
+    </div>
+</section>
+
+<section class="page-shell">
+    <div class="container">
+        <div class="app-card p-4 p-md-5">
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.errors }}
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Doctor</label>
+                        <input type="text" class="form-control" value="{{ doctor.name }}" readonly>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Treatment</label>
+                        <input type="text" class="form-control" value="{{ treatment.treatment_name }}" readonly>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Date</label>
+                        {{ form.date }}
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Time Slot</label>
+                        {{ form.time_slot }}
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Consultation Charge</label>
+                        {{ form.consultation_charge }}
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary mt-4">
+                    Book Appointment
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

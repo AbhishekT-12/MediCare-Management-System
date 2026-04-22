@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-body">
+            <h3 class="text-center mb-4">➕ Refer Lab Test to Patient</h3>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <!-- Test Name from hospital catalog -->
+                <div class="mb-3">
+                    <label class="form-label">🧬 Test Name</label>
+                    <select name="lab_test" class="form-control" id="testSelect" onchange="fillCost(this)">
+                        <option value="">-- Select Test --</option>
+                        {% for t in hospital_tests %}
+                            <option value="{{ t.test_name }}" data-cost="{{ t.price }}" data-time="{{ t.time_required }}">
+                                {{ t.test_name }} — ₹{{ t.price }} ({{ t.time_required }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Doctor -->
+                <div class="mb-3">
+                    <label class="form-label">🩺 Referred By (Doctor)</label>
+                    <select name="doctor" class="form-control">
+                        {% for d in doctors %}
+                            <option value="{{ d.id }}">{{ d }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Patient -->
+                <div class="mb-3">
+                    <label class="form-label">👤 Patient Name</label>
+                    <select name="patient" class="form-control">
+                        {% for p in patients %}
+                            <option value="{{ p.id }}">{{ p.user.username }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Cost (auto-filled) -->
+                <div class="mb-3">
+                    <label class="form-label">💰 Test Cost (₹)</label>
+                    <input type="number" name="cost" id="costField" class="form-control" placeholder="Auto-filled on test select" required>
+                </div>
+
+                <!-- Time Required (auto-filled) -->
+                <div class="mb-3">
+                    <label class="form-label">⏱ Time Required</label>
+                    <input type="text" name="time_required" id="timeField" class="form-control" placeholder="Auto-filled on test select">
+                </div>
+
+                <!-- Notes -->
+                <div class="mb-3">
+                    <label class="form-label">📝 Notes</label>
+                    <textarea name="desc" class="form-control" rows="3" placeholder="Additional notes..."></textarea>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success px-5">✅ Refer Test</button>
+                    <a href="{% url 'labtech_dashboard' %}" class="btn btn-secondary ms-2">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function fillCost(select) {
+    const opt = select.options[select.selectedIndex];
+    document.getElementById('costField').value = opt.getAttribute('data-cost') || '';
+    document.getElementById('timeField').value = opt.getAttribute('data-time') || '';
+}
+</script>
+
+{% endblock %}

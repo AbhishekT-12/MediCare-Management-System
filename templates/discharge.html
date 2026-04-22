@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="app-hero compact">
+    <div class="container">
+        <p class="mb-2 fw-semibold">Billing Desk</p>
+        <h1 class="display-5 fw-bold mb-2">Discharge Summary</h1>
+        <p class="fs-5 mb-0">Enter the patient stay details to generate the final bill.</p>
+    </div>
+</section>
+
+<section class="page-shell">
+    <div class="container">
+        <div class="app-card p-4 p-md-5">
+            <form method="POST" novalidate>
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                <div class="row g-3">
+                    {% for field in form %}
+                        <div class="{% if field.name == 'description' %}col-12{% else %}col-md-6{% endif %}">
+                            {% if field.name == 'food_required' %}
+                                <div class="form-check mt-4">
+                                    {{ field }}
+                                    <label for="{{ field.id_for_label }}" class="form-check-label">
+                                        {{ field.label }}
+                                    </label>
+                                </div>
+                            {% else %}
+                                <label for="{{ field.id_for_label }}" class="form-label fw-semibold">
+                                    {{ field.label }}
+                                </label>
+                                {{ field }}
+                            {% endif %}
+
+                            {% if field.help_text %}
+                                <div class="form-text">{{ field.help_text }}</div>
+                            {% endif %}
+
+                            {% for error in field.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="d-flex flex-wrap gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        Generate Final Bill
+                    </button>
+                    <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

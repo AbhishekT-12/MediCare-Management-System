@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="app-hero compact">
+    <div class="container">
+        <p class="mb-2 fw-semibold">{{ treatment.category }}</p>
+        <h1 class="display-5 fw-bold mb-2">Doctors for {{ treatment.treatment_name }}</h1>
+        <p class="fs-5 mb-0">Select a doctor to continue with appointment booking.</p>
+    </div>
+</section>
+
+<section class="page-shell">
+    <div class="container">
+        <div class="row g-4">
+            {% for doctor in doctors %}
+                <div class="col-md-4">
+                    <div class="app-card action-card">
+                        <span class="icon-tile mb-3"><i class="bi bi-person-badge"></i></span>
+                        <h5 class="fw-bold text-primary">{{ doctor.name }}</h5>
+                        <p class="mb-1"><strong>Specialization:</strong> {{ doctor.specialisation }}</p>
+                        <p class="mini-muted">{{ doctor.experience }} years experience</p>
+                        <a href="{% url 'book_doctor' doctor.id treatment.id %}" class="btn btn-success">
+                            Book Appointment
+                        </a>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12">
+                    <div class="alert alert-warning">No doctors available for this treatment.</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}
